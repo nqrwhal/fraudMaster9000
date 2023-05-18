@@ -4,32 +4,23 @@
 	"version": "0.0.1",
 	"manifest_version": 2,
 	"icons": {
-		"48": "icons/icon.png",
 		"128": "icons/icon.png"
 	},
 	"browser_action": {
 		"default_title": "fraudMaster9000",
-		"default_popup": "popup/popup.html"
+		"default_popup": "popup.html"
 	},
-	"background": {
-		"scripts": [
-			"background.js"
-		],
-		"persistent": true
-	},
+
 	"permissions": [
 		"storage",
 		"activeTab",
-		"tabs"
+		"tabs",
+		"https://*/*"
 	],
 	"content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "inject/loop.js"
-      ]
+      "matches": ["<all_urls>"],
+      "js": ["nhihnarocks.js"]
     }
 	]
 }
