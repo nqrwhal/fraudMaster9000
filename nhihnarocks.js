@@ -23,42 +23,53 @@ async function startLoop() {
     async function addToReturn(index) {
         let one = document.getElementsByClassName("product-card exchange-item card")[index];
         await one.click();
-        await sleep(300);
+        await sleep(600);
         await clickReason(0);
     }
 
     async function clickReason() {
-        await document.getElementsByClassName("base-button regular secondary select-reason__button progress-button")[0].click();
-        await sleep(350);
-        let numSecondaryReasons = document.getElementsByClassName("base-button regular secondary select-reason__button progress-button");
-
-        if (numSecondaryReasons.length > 0) {
-            await document.getElementsByClassName("base-button regular secondary select-reason__button progress-button")[numSecondaryReasons.length - 1].click();
-            await sleep(350);
-        }
-
-        let hasCommentBox = document.getElementsByClassName("add-comment__textarea");
-        let submitButton = document.getElementsByClassName("base-button regular primary add-comment__submit");
-
-        if (hasCommentBox.length > 0) {
-            await writeComment("add-comment-field", "I am returning this item because it is defective.");
-            await sleep(250);
-        }
-        if (submitButton.length > 0) {
-            await document.getElementsByClassName("base-button regular primary add-comment__submit")[0].click();
-            await sleep(300);
-        }
-        
-        let finalizeButton = document.getElementsByClassName("base-button regular secondary convert-item__button progress-button convert-item__button");
-        await sleep(350);
-        await finalizeButton[finalizeButton.length - 1].click();
-    }
+        try {
+            const selectReasonButtons = document.getElementsByClassName("base-button regular secondary select-reason__button progress-button");
+            if (selectReasonButtons.length > 0) {
+                await selectReasonButtons[0].click();
+                await sleep(550);
+            }
     
-    async function writeComment(id, text) {
-        let commentBox = document.getElementById(id);
-        commentBox.value = text;
-
+            const numSecondaryReasons = document.getElementsByClassName("base-button regular secondary select-reason__button progress-button");
+            if (numSecondaryReasons.length > 0) {
+                await numSecondaryReasons[0].click();
+                await sleep(550);
+            }
+    
+            const hasCommentBox = document.getElementsByClassName("add-comment__textarea");
+            if (hasCommentBox.length > 0) {
+                simulateTyping("I changed my mind and want to return the item.", hasCommentBox[0]);
+            }
+    
+            const submitButton = document.getElementsByClassName("base-button regular primary add-comment__submit");
+            if (submitButton.length > 0) {
+                await submitButton[0].click();
+            }
+            await sleep(550);
+            const finalizeButton = document.getElementsByClassName("base-button regular secondary convert-item__button progress-button convert-item__button");
+            if (finalizeButton.length > 0) {
+                await sleep(450)
+                try{
+                    await finalizeButton[finalizeButton.length - 1].click();
+                } catch (error) {
+                    await console.log("error");
+                    await finalizeButton[finalizeButton.length - 1].click();
+                }
+                
+            }
+            
+            await sleep(850);
+        } catch (error) {
+            // Handle the error
+            console.error("An error occurred:", error);
+        }
     }
+
 
     async function sleep(ms) {
         return new Promise((resolve) => {
@@ -79,6 +90,13 @@ async function startLoop() {
             }
         });
     }
+
+    async function simulateTyping(text, element) {
+        // Trigger the event listener function for input event
+        element.value = text;
+        const event = new Event('input', { bubbles: true });
+        element.dispatchEvent(event);
+      }
 
     main();
     `)
