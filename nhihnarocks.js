@@ -29,6 +29,12 @@ async function startLoop() {
 
     async function clickReason() {
         try {
+
+            const yesNoButtons = document.getElementsByClassName("yes-no-question slide-module__component");
+            if (yesNoButtons.length > 0) {
+                await document.getElementsByClassName("base-button small secondary")[1].click();
+                await sleep(550);
+            }
             const selectReasonButtons = document.getElementsByClassName("base-button regular secondary select-reason__button progress-button");
             if (selectReasonButtons.length > 0) {
                 await selectReasonButtons[0].click();
